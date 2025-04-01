@@ -7,7 +7,8 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader, random_split
-
+import random
+from datetime import datetime
 import pandas as pd
 import numpy as np
 from PIL import Image
@@ -19,18 +20,12 @@ import torchvision.models as models
 
 from torchvision.transforms import v2
 
-print(torch.__version__)
+
+
+
 exform = transforms.Compose([
     transforms.ToTensor(),
-    # v2.ColorJitter(
-    #     brightness=0.3,  
-    #     contrast=0.9,    
-    #     saturation=0.5   
-    # ),
-    # v2.RandomAdjustSharpness(
-    #     sharpness_factor=2.5,  
-    #     p=0.8
-    # ),
+   
 ])
 
 
@@ -49,9 +44,7 @@ val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False)
 
 test_loader = DataLoader(test_dataset, batch_size=8, shuffle=False)
 print(len(test_dataset))
-import random
-import time
-from datetime import datetime
+
 now = datetime.now()
 
 date_today = now.strftime("%d-%m-%Y")
@@ -76,7 +69,7 @@ def plot_train(model):
     pos_weight = torch.tensor([10.0]).to(device)
     criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
     criterion.to(device)
-    checkpoint = torch.load("model_folder/best_enhanced_model_19-03-2025.pth")
+    checkpoint = torch.load("model_folder/best_enhanced_model_01-04-2025.pth")
     model.load_state_dict(checkpoint['model_state_dict'])
     t_loss, t_acc, t_metrics = architecture2.evaluate(model, test_loader, test_size, device,criterion)
     
@@ -98,21 +91,10 @@ def plot_train(model):
         show_images(image_ex, heat_ex, output, filename)
     return t_loss, t_acc, t_metrics
 
-    
 
-
-train_loss, train_acc, t_metrics = plot_train(model)
-print(train_loss,"e acurácia de treino:", train_acc)
-
-
-size_histories = {}
-try:
-    size_histories['Model'] = {'history':h}
-except:
-    print("O modelo não foi treinado")
 def plot(model, save_path="training_plot_", date_today=""):
    
-    fig, axs = plt.subplots(2, 1, figsize=(10, 12))
+    fig, axs = plt.subplots(3, 1, figsize=(20, 20))
     
     
     axs[0].plot(model['history']['train_acc'], color="red", marker="o")
@@ -130,18 +112,32 @@ def plot(model, save_path="training_plot_", date_today=""):
     axs[1].set_xlabel('Epoch')
     axs[1].legend(['Train', 'Validation'], loc="upper right")
 
-    # axs[1].plot(model['history']['train_iou'], color="red", marker="o")
-    # axs[1].plot(model['history']['val_iou'], color="blue", marker="h")
-    # axs[1].set_title('IoU Comparison between Train & Validation Set')
-    # axs[1].set_ylabel('Iou')
-    # axs[1].set_xlabel('Epoch')
-    # axs[1].legend(['Train', 'Validation'], loc="upper right")
+    axs[2].plot(model['history']['val_iou'], color="blue", marker="h")
+    axs[2].set_title('IoU from Validation Set')
+    axs[2].set_ylabel('Iou')
+    axs[2].set_xlabel('Epoch')
+    axs[2].legend('Validation', loc="upper right")
 
     plt.tight_layout()
 
     plt.savefig(save_path, dpi=300, bbox_inches="tight")
-    print(f"Plot saved as {save_path+date_today+".png"}")
+    print(f"Plot saved as {save_path+date_today+'.png'}")
+    
+
+
+train_loss, train_acc, t_metrics = plot_train(model)
+print(train_loss,"e acurácia de treino:", train_acc)
+
+
+size_histories = {}
+try:
+    size_histories['Model'] = {'history':h}
+    plot(size_histories['Model'], date_today)
+except:
+    print("O modelo não foi treinado")
+
+    
 
 
 
-plot(size_histories['Model'], date_today)
+

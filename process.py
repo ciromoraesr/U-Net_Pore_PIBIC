@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from PIL import Image
 
-from test import claheimg
+from clahe import claheimg
 import torch
 import cv2
 import torch.nn as nn
