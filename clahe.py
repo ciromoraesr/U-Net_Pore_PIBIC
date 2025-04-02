@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-print("to aqui")
 def histogramEqual():
     root = os.getcwd()
     img_dir = r'rep/images/9_whorl_739.jpg'

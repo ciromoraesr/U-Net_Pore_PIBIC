@@ -1,0 +1,3 @@
+to aqui
+740
+Wanna train the model? [Y/n]

@@ -13,6 +13,11 @@ from torchvision import transforms
 from architecture import PoreDetectionCNN2
 import architecture
 from process import FingerprintData
+import time
+
+
+
+
 #U-NET
 class EnhancedPoreDetectionCNN(nn.Module):
     def __init__(self, in_channels=1):
@@ -218,8 +223,8 @@ def evaluate(model, loader, size, device, criterion):
     
     return loss/size, acc/size, metrics
 
-import time
-def train_model(train_loader, val_loader, train_size, val_size, date_today, model_type='enhanced', num_epochs=35, lr=0.001):
+
+def train_model(train_loader, val_loader, train_size, val_size, date_today, model_type='enhanced', num_epochs=35, lr=0.001, patience = 4):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     history = {
@@ -241,14 +246,21 @@ def train_model(train_loader, val_loader, train_size, val_size, date_today, mode
     
     optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=2, factor=0.5)
+
+
     criterion.to(device)
     best_val_loss = float('inf')
+
     model_name = f"best_{model_type}_model_{date_today}.pth"
     save_path = "model_folder/" + model_name
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
-    
+
+    early_stop = 0
     times = []
-    for epoch in range(num_epochs):
+    epoch = 0
+
+
+    while epoch < num_epochs and early_stop < patience:
         st = time.time()
         model.train()
         train_loss, train_acc = 0.0, 0.0
@@ -309,16 +321,24 @@ def train_model(train_loader, val_loader, train_size, val_size, date_today, mode
                 'scheduler_state_dict': scheduler.state_dict(),
                 'best_val_loss': best_val_loss,
             }, save_path)
-            print(f"Model saved at epoch {epoch + 1}")
+            print(f"model saved at epoch {epoch + 1}")
+        else:
+            early_stop += 1
+
+
         
-        times.append(end-st)
-        print(f"Epoch {epoch + 1}/{num_epochs} | Elapsed Time : {end-st:.2f} s")
-        print(f"Train Loss: {train_loss:.4f} | Val Loss: {val_loss:.4f}")
-        print(f"Train Acc: {train_acc:.4f} | Val Acc: {val_acc:.4f}")
+        final_time = end-st
+        remaining = ((num_epochs - epoch) + 1) * final_time
+        print(f"remaining time: {remaining/60} min")
+        times.append(final_time)
+        print(f"epoch {epoch + 1}/{num_epochs} | elapsed Time : {end-st:.2f} s ")
+        print(f"train loss: {train_loss:.4f} | val loss: {val_loss:.4f}")
+        print(f"train Acc: {train_acc:.4f} | val acc: {val_acc:.4f}")
         
         if model_type == 'enhanced':
             print(f"Val Precision: {val_metrics['precision']:.4f} | Val Recall: {val_metrics['recall']:.4f}")
             print(f"Val F1: {val_metrics['f1']:.4f} | Val IoU: {val_metrics['iou']:.4f}")
+        epoch = epoch + 1
     print(f"Tempo total: {sum(times)/60:.2f} mins ")
     return history
 

@@ -1,0 +1,7 @@
+to aqui
+740
+Wanna train the model? [Y/n]Traceback (most recent call last):
+  File "/home/cirorocha/PIBIC_CIRO/main.py", line 55, in <module>
+    v = input("Wanna train the model? [Y/n]")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [Errno 9] Bad file descriptor

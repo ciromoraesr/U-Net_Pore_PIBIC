@@ -106,6 +106,4 @@ for i in range(5):
             print(f"{e}")
         
         count += 1   
-#%%
 print(len(os.listdir("rep/images")), len(os.listdir("rep/labels")))
-#%%

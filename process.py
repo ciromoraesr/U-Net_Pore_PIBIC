@@ -42,9 +42,9 @@ class FingerprintData(Dataset):
         coords = pd.read_csv(label_path, sep = '\t', names = ['x', 'y']).values
         
         originw, originh = image.size
-        resized_image = image.resize((300,300), Image.BILINEAR)
+        resized_image = image
         
-        resized_coords = self._resize_coords(coords[1:], (originw, originh), (300,300))
+        #resized_coords = self._resize_coords(coords[1:], (originw, originh), (300,300))
 
 
 
@@ -52,10 +52,10 @@ class FingerprintData(Dataset):
         
         if self.transform:
             image = self.transform(resized_image)
-        heatmap = self._create_heatmap(resized_coords, (300,300))
+        heatmap = self._create_heatmap(coords, (256,256))
         heatmap = torch.tensor(heatmap, dtype = torch.float32).unsqueeze(0)
-        poremap = self._create_pixel_map(resized_coords, (300,300))
-        poremap = torch.tensor(poremap, dtype = torch.float32).unsqueeze(0)
+        
+        
         return image, heatmap
 
     def _resize_coords(self, coords, original_size, target_size):
@@ -91,14 +91,7 @@ class FingerprintData(Dataset):
 
         heatmap = np.clip(heatmap, 0, 1)
         return heatmap
-    def _create_pixel_map(self, coords, img_size):
-        heatmap = np.zeros(img_size, dtype = np.float32)
-        coords = coords[1:]
-        for x,y in coords:
-            x, y = int(x), int(y)
-            heatmap[x,y] = 1.0
-
-        return heatmap
+    
 
 
 
@@ -160,35 +153,3 @@ def show_images(image1, image2, image3, filename):
         plt.savefig(filename, bbox_inches='tight', pad_inches=0.1)
 
 
-# exform = transforms.Compose([
-#     transforms.ToTensor(),
-#     # v2.ColorJitter(
-#     #     brightness=0.3,  
-#     #     contrast=0.9,    
-#     #     saturation=0.5   
-#     # ),
-#     # transforms.RandomRotation(10),
-#     # v2.RandomAdjustSharpness(
-#     #     sharpness_factor=2.5,  
-#     #     p=0.7
-#     # ),
-#     # transforms.RandomHorizontalFlip(p=0.6),
-# ])
-
-
-# img_dir = r'rep/images'
-# lbl_dir = r'rep/labels'
-# dataset = FingerprintData(img_dir, lbl_dir, transform = exform)
-# train_size = int(0.8 * len(dataset))
-# val_size = int(0.1 * len(dataset))
-# test_size = len(dataset) - train_size - val_size
-# train_dataset, val_dataset, test_dataset = random_split(dataset, [train_size, val_size, test_size])
-# device = torch.device('cuda' if torch.cuda .is_available() else 'cpu')
-# print(device)
-
-# import random
-# for i in range(5):
-#     n = random.randint(10, 299)
-#     image_ex = train_dataset[n][0]
-#     heat_ex = train_dataset[n][1]
-#     show_images(image_ex, heat_ex)

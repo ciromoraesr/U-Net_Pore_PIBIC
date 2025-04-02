@@ -1,6 +1,5 @@
 from process import FingerprintData, show_images
 import os
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True,max_split_size_mb:3994"
 import architecture
 import architecture2
 import torch
@@ -17,7 +16,6 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 import matplotlib.pyplot as plt
 import torchvision.models as models
-
 from torchvision.transforms import v2
 
 
@@ -29,13 +27,17 @@ exform = transforms.Compose([
 ])
 
 
-img_dir = r'rep/images'
-lbl_dir = r'rep/labels'
+img_dir = r'repository/new_images/'
+lbl_dir = r'repository/new_labels/'
 dataset = FingerprintData(img_dir, lbl_dir, transform = exform)
-    
+
+
+#spliting the dataset into 80% train, 10% validation and 10% test
 train_size = int(0.8 * len(dataset))
 val_size = int(0.1 * len(dataset))
 test_size = len(dataset) - train_size - val_size
+
+
 train_dataset, val_dataset, test_dataset = random_split(dataset, [train_size, val_size, test_size])
 
 
@@ -43,16 +45,17 @@ train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False)
 
 test_loader = DataLoader(test_dataset, batch_size=8, shuffle=False)
-print(len(test_dataset))
 
-now = datetime.now()
 
-date_today = now.strftime("%d-%m-%Y")
+
+date_today = datetime.now().strftime("%d-%m-%Y-%H")
+
 torch.cuda.empty_cache()
 
+v = input("Wanna train the model? [Y/n]")
+if(v.lower() == 'y'):
+    h = architecture2.train_model(train_loader, val_loader, train_size, val_size, date_today)
 
-# uncomment this to train the model again 
-#h = architecture2.train_model(train_loader, val_loader, train_size, val_size, date_today)
 
 
 
@@ -74,7 +77,7 @@ def plot_train(model):
     t_loss, t_acc, t_metrics = architecture2.evaluate(model, test_loader, test_size, device,criterion)
     
     print(t_loss, t_acc)
-    for i in range(5):
+    for i in range(2):
         file = str(i) + "_" + str(time.hour)
         filename = os.path.join('prints/', file)
         random_idx = random.randint(0, len(test_dataset) - 1)
@@ -130,8 +133,12 @@ print(train_loss,"e acurácia de treino:", train_acc)
 
 
 size_histories = {}
+
+
 try:
+
     size_histories['Model'] = {'history':h}
+    
     plot(size_histories['Model'], date_today)
 except:
     print("O modelo não foi treinado")
