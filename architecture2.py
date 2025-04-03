@@ -1,4 +1,3 @@
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
@@ -10,13 +9,23 @@ from PIL import Image
 import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
-from architecture import PoreDetectionCNN2
-import architecture
 from process import FingerprintData
 import time
+from datetime import datetime
+import logging
 
 
-
+log_dir = "logs"
+os.makedirs(log_dir, exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers = [
+        logging.FileHandler(f"{log_dir}/training_{datetime.now().strftime('%Y%m%d_%H%M')}.log"),
+        logging.StreamHandler()    
+    ]
+)
+logger = logging.getLogger(__name__)
 
 #U-NET
 class EnhancedPoreDetectionCNN(nn.Module):
@@ -199,21 +208,17 @@ def evaluate(model, loader, size, device, criterion):
             outputs = model(images)
             
            
-            if isinstance(model, architecture.PoreDetectionCNN2):
+             
+            if isinstance(criterion, nn.BCEWithLogitsLoss):
+                batch_loss = criterion(torch.log(outputs / (1 - outputs + 1e-7)), targets)
+            else:
                 batch_loss = criterion(outputs, targets)
-                batch_acc = architecture.compute_accuracy(outputs, targets)
-                
-            else:  
-                if isinstance(criterion, nn.BCEWithLogitsLoss):
-                    batch_loss = criterion(torch.log(outputs / (1 - outputs + 1e-7)), targets)
-                else:
-                    batch_loss = criterion(outputs, targets)
-                
-                batch_metrics = compute_enhanced_metrics(outputs, targets)
-                batch_acc = batch_metrics['accuracy']
-                
-                for key in metrics:
-                    metrics[key] += batch_metrics[key] * images.size(0)
+            
+            batch_metrics = compute_enhanced_metrics(outputs, targets)
+            batch_acc = batch_metrics['accuracy']
+            
+            for key in metrics:
+                metrics[key] += batch_metrics[key] * images.size(0)
             
             loss += batch_loss.item() * images.size(0)
             acc += batch_acc * images.size(0)
@@ -224,7 +229,7 @@ def evaluate(model, loader, size, device, criterion):
     return loss/size, acc/size, metrics
 
 
-def train_model(train_loader, val_loader, train_size, val_size, date_today, model_type='enhanced', num_epochs=35, lr=0.001, patience = 4):
+def train_model(train_loader: DataLoader, val_loader: DataLoader, train_size: int, val_size: int, date_today: str, num_epochs: int, lr=0.001, patience = 4):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     history = {
@@ -235,23 +240,19 @@ def train_model(train_loader, val_loader, train_size, val_size, date_today, mode
     }
 
     
-    if model_type == 'enhanced':
-        model = EnhancedPoreDetectionCNN().to(device)
+    
+    model = EnhancedPoreDetectionCNN().to(device)
        
-        criterion = CombinedLoss(bce_weight=0.5)
-    else:  
-        model = PoreDetectionCNN2().to(device)
-        pos_weight = torch.tensor([10.0]).to(device)
-        criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+    criterion = CombinedLoss(bce_weight=0.5).to(device)
+    
     
     optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=1e-4)
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=2, factor=0.5)
 
 
-    criterion.to(device)
     best_val_loss = float('inf')
 
-    model_name = f"best_{model_type}_model_{date_today}.pth"
+    model_name = f"best_model_{date_today}.pth"
     save_path = "model_folder/" + model_name
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
@@ -259,7 +260,12 @@ def train_model(train_loader, val_loader, train_size, val_size, date_today, mode
     times = []
     epoch = 0
 
+    logger.info(f"training started for {num_epochs} epochs")
+    logger.info(f"model will be saved to: {save_path}")
 
+    if(early_stop >= patience):
+        logger.warning(f"early stopping triggered at {epoch + 1}!")
+        
     while epoch < num_epochs and early_stop < patience:
         st = time.time()
         model.train()
@@ -272,20 +278,15 @@ def train_model(train_loader, val_loader, train_size, val_size, date_today, mode
             optimizer.zero_grad()
             outputs = model(images)
             
-            if isinstance(model, PoreDetectionCNN2):
-                loss = criterion(outputs, targets)
-                acc = architecture.compute_accuracy(outputs, targets)
-            else:  
-                if isinstance(criterion, nn.BCEWithLogitsLoss):
-                    loss = criterion(torch.log(outputs / (1 - outputs + 1e-7)), targets)
-                else:
-                    loss = criterion(outputs, targets)
-                
-                batch_metrics = compute_enhanced_metrics(outputs, targets)
-                acc = batch_metrics['accuracy']
-                
-                for key in train_metrics:
-                    train_metrics[key] += batch_metrics[key] * images.size(0)
+            
+            
+            loss = criterion(outputs, targets)
+            
+            batch_metrics = compute_enhanced_metrics(outputs, targets)
+            acc = batch_metrics['accuracy']
+            
+            for key in train_metrics:
+                train_metrics[key] += batch_metrics[key] * images.size(0)
 
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -321,25 +322,28 @@ def train_model(train_loader, val_loader, train_size, val_size, date_today, mode
                 'scheduler_state_dict': scheduler.state_dict(),
                 'best_val_loss': best_val_loss,
             }, save_path)
-            print(f"model saved at epoch {epoch + 1}")
+            logger.info(f"new best model saved at epoch {epoch + 1} (Val Loss: {val_loss:.4f})")
         else:
             early_stop += 1
-
+            logger.debug(f"Early stop counter: {early_stop}/{patience}")
 
         
         final_time = end-st
         remaining = ((num_epochs - epoch) + 1) * final_time
-        print(f"remaining time: {remaining/60} min")
+        logger.debug(f"estimated remaining training time: {remaining/60:.1f} min")
         times.append(final_time)
-        print(f"epoch {epoch + 1}/{num_epochs} | elapsed Time : {end-st:.2f} s ")
-        print(f"train loss: {train_loss:.4f} | val loss: {val_loss:.4f}")
-        print(f"train Acc: {train_acc:.4f} | val acc: {val_acc:.4f}")
-        
-        if model_type == 'enhanced':
-            print(f"Val Precision: {val_metrics['precision']:.4f} | Val Recall: {val_metrics['recall']:.4f}")
-            print(f"Val F1: {val_metrics['f1']:.4f} | Val IoU: {val_metrics['iou']:.4f}")
+        logger.info(
+            f"Epoch {epoch + 1}/{num_epochs} || "
+            f"Time: {end-st:.2f}s | Remaining: {(remaining/60):.1f}min || "
+            
+            f"Train Acc: {train_acc:.4f} | Val Acc: {val_acc:.4f} || "
+            f"Train Loss: {train_loss:.4f} | Val Loss: {val_loss:.4f} || "
+            f"Val IoU: {val_metrics['iou']:.4f} | Val F1: {val_metrics['f1']:.4f}"
+        )
+
         epoch = epoch + 1
-    print(f"Tempo total: {sum(times)/60:.2f} mins ")
+    logger.info(f"Training completed! total time: {sum(times)/60:.2f} mins")
+    logger.info(f"Best validation loss achieved: {best_val_loss:.4f}")
     return history
 
 

@@ -1,0 +1,4 @@
+2025-04-03 00:32:10,848 - architecture2 - INFO - training started for 20 epochs
+2025-04-03 00:32:10,848 - architecture2 - INFO - model will be saved to: model_folder/best_model_03-04-2025-00.pth
+2025-04-03 00:34:46,583 - architecture2 - INFO - new best model saved at epoch 1 (Val Loss: 0.3669)
+2025-04-03 00:34:46,583 - architecture2 - INFO - Epoch 1/20 || Time: 155.70s | Remaining: 54.5min || Train Loss: 0.5113 | Val Loss: 0.3669 || Val IoU: 0.5673 | Val F1: 0.7239

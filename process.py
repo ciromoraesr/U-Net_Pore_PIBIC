@@ -2,8 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 from PIL import Image
-
-from clahe import claheimg
+import cv2 as cv
 import torch
 import cv2
 import torch.nn as nn
@@ -14,7 +13,19 @@ from torchvision import transforms
 from torchvision.transforms import v2
 import matplotlib.pyplot as plt
 
-print(len(os.listdir("rep/images")))
+
+def claheimg(path):
+    root = os.getcwd()
+    img_dir = path
+    imgPath = os.path.join(root, img_dir)
+    
+    img = cv.imread(imgPath, cv.IMREAD_GRAYSCALE)
+    claheObj = cv.createCLAHE(clipLimit=5, tileGridSize=(8,8))
+    claheImg = claheObj.apply(img)
+    img_normalized = claheImg.astype(np.float32) / 255.0
+
+    return img_normalized
+
 
 class FingerprintData(Dataset):
     
@@ -52,7 +63,7 @@ class FingerprintData(Dataset):
         
         if self.transform:
             image = self.transform(resized_image)
-        heatmap = self._create_heatmap(coords, (256,256))
+        heatmap = self._create_heatmap(coords, (originh,originw))
         heatmap = torch.tensor(heatmap, dtype = torch.float32).unsqueeze(0)
         
         
