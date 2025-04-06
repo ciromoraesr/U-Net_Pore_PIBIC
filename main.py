@@ -1,4 +1,4 @@
-from process import FingerprintData, show_images
+from process import FingerprintData
 import os
 import architecture
 import architecture2
@@ -15,7 +15,7 @@ from torchvision import transforms
 import matplotlib.pyplot as plt
 import torchvision.models as models
 from torchvision.transforms import v2
-from tests import plot_results, test_acc, plot
+from tests import plot_results, test_acc, plot_example, overlay
 
 torch.cuda.empty_cache()
 
@@ -24,8 +24,20 @@ exform = transforms.Compose([
    
 ])
 
-img_dir = r'repository/new_images/'
-lbl_dir = r'repository/new_labels/'
+#setting a seed to fix the test, train and validation data
+def set_seed(seed=42):
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+    np.random.seed(seed)
+    random.seed(seed)
+
+
+set_seed(42)
+
+img_dir = r'rep/images'
+lbl_dir = r'rep/labels'
 dataset = FingerprintData(img_dir, lbl_dir, transform = exform)
 
 
@@ -43,29 +55,28 @@ val_loader = DataLoader(val_dataset, batch_size=16, shuffle=False)
 test_loader = DataLoader(test_dataset, batch_size=8, shuffle=False)
 
 
-date_today = datetime.now().strftime("%d-%m-%Y-%H")
+date_today = datetime.now().strftime("%d-%m-%Y-%H-%M")
 
 
 v = input("Wanna train the model? [Y/n]")
 
 if(v.lower() == 'y'):
-    h = architecture2.train_model(train_loader, val_loader, train_size, val_size, date_today, 20)
+    h = architecture2.train_model(train_loader, val_loader, train_size, val_size, date_today, num_epochs = 30)
+    
+   
+    savepath = os.path.join("/home/cirorocha/PIBIC_CIRO/results/", "training_plot_"+date_today)
+    plot_results(h, savepath)
 
-
+model_now = "/home/cirorocha/PIBIC_CIRO/model_folder/best_model_03-04-2025-13-57.pth"
 model = architecture2.EnhancedPoreDetectionCNN()
 
+cont, coords = overlay(model, model_now, test_dataset)
 
-test_loss, test_acc, t_metrics = test_acc(model)
-print(test_loss,"e acurácia de treino:", test_acc)
 
-size_histories = {}
+test_loss, test_acc, t_metrics = test_acc(model, test_loader, test_size)
+print(t_metrics)
 
-try:
-    size_histories['Model'] = {'history':h}
-    savepath = os.path.join(r"/results", "training_plot_"+date_today)
-    plot_results(size_histories['Model'], )
-except:
-    print("O modelo não foi treinado")
+
 
     
 

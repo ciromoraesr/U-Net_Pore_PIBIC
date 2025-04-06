@@ -1,0 +1,8 @@
+2025-04-03 13:46:37,043 - architecture2 - INFO - training started for 2 epochs
+2025-04-03 13:46:37,043 - architecture2 - INFO - model will be saved to: model_folder/best_model_03-04-2025-13-46.pth
+2025-04-03 13:49:14,314 - architecture2 - INFO - new best model saved at epoch 1 (Val Loss: 0.4161)
+2025-04-03 13:49:14,314 - architecture2 - INFO - Epoch 1/2 || Time: 157.23s | Remaining: 7.9min || Train Acc: 0.9401 | Val Acc: 0.9729 || Train Loss: 0.5660 | Val Loss: 0.4161 || Val IoU: 0.5360 | Val F1: 0.6979
+2025-04-03 13:51:54,153 - architecture2 - INFO - new best model saved at epoch 2 (Val Loss: 0.2761)
+2025-04-03 13:51:54,153 - architecture2 - INFO - Epoch 2/2 || Time: 159.52s | Remaining: 5.3min || Train Acc: 0.9777 | Val Acc: 0.9837 || Train Loss: 0.3274 | Val Loss: 0.2761 || Val IoU: 0.6583 | Val F1: 0.7939
+2025-04-03 13:51:54,153 - architecture2 - INFO - Training completed! total time: 5.28 mins
+2025-04-03 13:51:54,153 - architecture2 - INFO - Best validation loss achieved: 0.2761

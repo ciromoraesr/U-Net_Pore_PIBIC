@@ -27,7 +27,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-#U-NET
+#U-NET architecture used
 class EnhancedPoreDetectionCNN(nn.Module):
     def __init__(self, in_channels=1):
         super(EnhancedPoreDetectionCNN, self).__init__()
@@ -150,9 +150,9 @@ class EnhancedPoreDetectionCNN(nn.Module):
         out = self.final(c1)
         return torch.sigmoid(out)
 
+# calculating the metrics based on the probability that the predicted pixel and the labeled pixel are equal or not
 
-
-def compute_enhanced_metrics(pred, target, threshold=0.5):
+def compute_enhanced_metrics(pred, target, threshold=0.2):
     
     pred_binary = (pred > threshold).float()
     target_binary = (target > threshold).float()
@@ -162,6 +162,9 @@ def compute_enhanced_metrics(pred, target, threshold=0.5):
     fn = torch.sum((pred_binary == 0) & (target_binary == 1)).float()
     tn = torch.sum((pred_binary == 0) & (target_binary == 0)).float()
     #1e-10 to avoid division by 0
+
+    fpr = fp / (fp + tn + 1e-10)
+    
     accuracy = (tp + tn) / (tp + fp + fn + tn + 1e-10)
     
     precision = tp / (tp + fp + 1e-10)
@@ -175,7 +178,8 @@ def compute_enhanced_metrics(pred, target, threshold=0.5):
         'precision': precision.item(),
         'recall': recall.item(),
         'f1': f1.item(),
-        'iou': iou.item()
+        'iou': iou.item(),
+        'fpr': fpr.item()
     }
 
 #combining bce with dice loss functions to take profit of both better cases
@@ -200,7 +204,7 @@ class CombinedLoss(nn.Module):
 def evaluate(model, loader, size, device, criterion):
     model.eval()
     loss, acc = 0.0, 0.0
-    metrics = {'precision': 0.0, 'recall': 0.0, 'f1': 0.0, 'iou': 0.0}
+    metrics = {'precision': 0.0, 'recall': 0.0, 'f1': 0.0, 'iou': 0.0, 'fpr': 0.0}
     
     with torch.no_grad():
         for images, targets in loader:
@@ -236,7 +240,8 @@ def train_model(train_loader: DataLoader, val_loader: DataLoader, train_size: in
         'train_loss': [], 'val_loss': [],
         'train_acc': [], 'val_acc': [],
         'val_precision': [], 'val_recall': [],
-        'val_f1': [], 'val_iou': []
+        'val_f1': [], 'val_iou': [],
+        'val_fpr': []
     }
 
     

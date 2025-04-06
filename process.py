@@ -13,7 +13,7 @@ from torchvision import transforms
 from torchvision.transforms import v2
 import matplotlib.pyplot as plt
 
-
+# Using clahe (Contrast Limited Adaptive Histogram Equalization) to enhance better local contrast
 def claheimg(path):
     root = os.getcwd()
     img_dir = path
@@ -26,10 +26,10 @@ def claheimg(path):
 
     return img_normalized
 
-
+# Class to create the dataset
 class FingerprintData(Dataset):
     
-    def __init__(self, image_dir, label_dir, transform = None, sigma = 2.0):
+    def __init__(self, image_dir, label_dir, transform = None, sigma = 1.0):
         self.image_dir = image_dir
         self.label_dir = label_dir
         self.transform = transform
@@ -38,6 +38,8 @@ class FingerprintData(Dataset):
         self.label_files = [f.replace(os.path.splitext(f)[1], '.tsv') for f in self.image_files]
         for lf in self.label_files:
             assert os.path.isfile(os.path.join(label_dir, lf)), f"Missing: {lf}"
+    def get_cords(self, idx):
+        return pd.read_csv(os.path.join(self.label_dir,self.label_files[idx]), sep = '\t', names = ['x', 'y']).values
     def __len__(self):
         return len(self.image_files)
 
@@ -108,59 +110,6 @@ class FingerprintData(Dataset):
 
 
 
-def show_images(image1, image2, image3, filename):
-    filename = filename + ".png"
-    if image3 is None:
-        image1_np = image1.squeeze().numpy()
-        image2_np = image2.squeeze().numpy()
-        image1_np = (image1_np * 255).astype(np.uint8)
-        image2_np = (image2_np * 255).astype(np.uint8)
 
-        if image1_np.shape != image2_np.shape:
-            h = min(image1_np.shape[0], image2_np.shape[0])
-            w1 = int((h / image1_np.shape[0]) * image1_np.shape[1])
-            w2 = int((h / image2_np.shape[0]) * image2_np.shape[1])
-            image1_np = cv2.resize(image1_np, (w1, h))
-            image2_np = cv2.resize(image2_np, (w2, h))
-        _, axs = plt.subplots(1, 2, figsize=(12, 12))
-        axs = axs.flatten()
-        axs[0].imshow(image1_np)
-        axs[0].set_title('Imagem 1')
-        axs[1].imshow(image2_np)
-        axs[1].set_title('Imagem 2')
-
-        
-        for ax in axs:
-            ax.axis('off')
-        plt.savefig(filename, bbox_inches='tight', pad_inches=0.1)
-    else:
-        image1_np = image1.squeeze().numpy()
-        image2_np = image2.squeeze().numpy()
-        image3_np = image3
-        image1_np = (image1_np * 255).astype(np.uint8)
-        image2_np = (image2_np * 255).astype(np.uint8)
-        image3_np = (image3_np * 255).astype(np.uint8)
-
-        if image1_np.shape != image2_np.shape:
-            h = min(image1_np.shape[0], image2_np.shape[0])
-            w1 = int((h / image1_np.shape[0]) * image1_np.shape[1])
-            w2 = int((h / image2_np.shape[0]) * image2_np.shape[1])
-            w3 = int((h / image3_np.shape[0]) * image3_np.shape[1])
-            image1_np = cv2.resize(image1_np, (w1, h))
-            image2_np = cv2.resize(image2_np, (w2, h))
-            image3_np = cv2.resize(image3_np, (w3, h))
-       
-        _, axs = plt.subplots(1, 3, figsize=(12, 12))
-        axs = axs.flatten()
-        axs[0].imshow(image1_np, cmap = 'gray')
-        axs[0].set_title('Imagem Real')
-        axs[1].imshow(image2_np, cmap = 'gray')
-        axs[1].set_title('Imagem Label')
-
-        axs[2].imshow(image3_np, cmap = 'gray')
-        axs[2].set_title('Imagem do Modelo')
-        for ax in axs:
-            ax.axis('off')
-        plt.savefig(filename, bbox_inches='tight', pad_inches=0.1)
 
 
