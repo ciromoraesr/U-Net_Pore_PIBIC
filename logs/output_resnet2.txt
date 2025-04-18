@@ -1,0 +1,120 @@
+Wanna train the model? [Y/n]2025-04-16 10:34:28,803 - architecture2 - INFO - training started for 60 epochs
+2025-04-16 10:34:28,803 - architecture2 - INFO - model will be saved to: model_folder/best_model_16-04-2025-10-34.pth
+2025-04-16 10:36:25,286 - architecture2 - INFO - Epoch 1/60 || Time: 116.48s | Remaining: 118.4min || Train Acc: 0.9090 | Val Acc: 0.9931 || Train Loss: 0.3780 | Val Loss: 0.2694 || Val IoU: 0.6007 | Val F1: 0.7504 | Val FPR: 0.0031
+2025-04-16 10:38:21,606 - architecture2 - INFO - Epoch 2/60 || Time: 116.31s | Remaining: 116.3min || Train Acc: 0.9944 | Val Acc: 0.9948 || Train Loss: 0.2542 | Val Loss: 0.2499 || Val IoU: 0.6848 | Val F1: 0.8128 | Val FPR: 0.0021
+2025-04-16 10:40:18,239 - architecture2 - INFO - Epoch 3/60 || Time: 116.63s | Remaining: 114.7min || Train Acc: 0.9952 | Val Acc: 0.9954 || Train Loss: 0.2447 | Val Loss: 0.2414 || Val IoU: 0.7174 | Val F1: 0.8353 | Val FPR: 0.0019
+2025-04-16 10:42:15,068 - architecture2 - INFO - Epoch 4/60 || Time: 116.82s | Remaining: 112.9min || Train Acc: 0.9956 | Val Acc: 0.9956 || Train Loss: 0.2405 | Val Loss: 0.2391 || Val IoU: 0.7282 | Val F1: 0.8426 | Val FPR: 0.0018
+2025-04-16 10:44:12,001 - architecture2 - INFO - Epoch 5/60 || Time: 116.93s | Remaining: 111.1min || Train Acc: 0.9958 | Val Acc: 0.9958 || Train Loss: 0.2382 | Val Loss: 0.2377 || Val IoU: 0.7345 | Val F1: 0.8468 | Val FPR: 0.0016
+2025-04-16 10:46:09,048 - architecture2 - INFO - Epoch 6/60 || Time: 117.04s | Remaining: 109.2min || Train Acc: 0.9959 | Val Acc: 0.9958 || Train Loss: 0.2363 | Val Loss: 0.2374 || Val IoU: 0.7347 | Val F1: 0.8470 | Val FPR: 0.0014
+2025-04-16 10:48:06,027 - architecture2 - INFO - Epoch 7/60 || Time: 116.98s | Remaining: 107.2min || Train Acc: 0.9960 | Val Acc: 0.9949 || Train Loss: 0.2353 | Val Loss: 0.2449 || Val IoU: 0.7049 | Val F1: 0.8268 | Val FPR: 0.0031
+2025-04-16 10:50:03,040 - architecture2 - INFO - Epoch 8/60 || Time: 117.01s | Remaining: 105.3min || Train Acc: 0.9961 | Val Acc: 0.9941 || Train Loss: 0.2345 | Val Loss: 0.2516 || Val IoU: 0.6719 | Val F1: 0.8037 | Val FPR: 0.0037
+2025-04-16 10:52:00,152 - architecture2 - INFO - Epoch 9/60 || Time: 117.11s | Remaining: 103.4min || Train Acc: 0.9962 | Val Acc: 0.9960 || Train Loss: 0.2335 | Val Loss: 0.2343 || Val IoU: 0.7500 | Val F1: 0.8571 | Val FPR: 0.0017
+2025-04-16 10:53:57,295 - architecture2 - INFO - Epoch 10/60 || Time: 117.14s | Remaining: 101.5min || Train Acc: 0.9962 | Val Acc: 0.9959 || Train Loss: 0.2332 | Val Loss: 0.2391 || Val IoU: 0.7307 | Val F1: 0.8443 | Val FPR: 0.0010
+2025-04-16 10:55:54,611 - architecture2 - INFO - Epoch 11/60 || Time: 117.32s | Remaining: 99.7min || Train Acc: 0.9962 | Val Acc: 0.9958 || Train Loss: 0.2328 | Val Loss: 0.2364 || Val IoU: 0.7425 | Val F1: 0.8522 | Val FPR: 0.0020
+2025-04-16 10:57:51,903 - architecture2 - INFO - Epoch 12/60 || Time: 117.29s | Remaining: 97.7min || Train Acc: 0.9963 | Val Acc: 0.9958 || Train Loss: 0.2319 | Val Loss: 0.2376 || Val IoU: 0.7363 | Val F1: 0.8480 | Val FPR: 0.0016
+2025-04-16 10:59:49,194 - architecture2 - INFO - Epoch 13/60 || Time: 117.29s | Remaining: 95.8min || Train Acc: 0.9964 | Val Acc: 0.9962 || Train Loss: 0.2309 | Val Loss: 0.2322 || Val IoU: 0.7632 | Val F1: 0.8656 | Val FPR: 0.0017
+2025-04-16 11:01:46,523 - architecture2 - INFO - Epoch 14/60 || Time: 117.32s | Remaining: 93.9min || Train Acc: 0.9964 | Val Acc: 0.9964 || Train Loss: 0.2306 | Val Loss: 0.2306 || Val IoU: 0.7701 | Val F1: 0.8700 | Val FPR: 0.0013
+2025-04-16 11:03:43,817 - architecture2 - INFO - Epoch 15/60 || Time: 117.29s | Remaining: 91.9min || Train Acc: 0.9964 | Val Acc: 0.9965 || Train Loss: 0.2304 | Val Loss: 0.2310 || Val IoU: 0.7685 | Val F1: 0.8690 | Val FPR: 0.0010
+2025-04-16 11:05:41,151 - architecture2 - INFO - Epoch 16/60 || Time: 117.33s | Remaining: 90.0min || Train Acc: 0.9965 | Val Acc: 0.9964 || Train Loss: 0.2302 | Val Loss: 0.2312 || Val IoU: 0.7675 | Val F1: 0.8684 | Val FPR: 0.0011
+2025-04-16 11:07:38,328 - architecture2 - INFO - Epoch 17/60 || Time: 117.18s | Remaining: 87.9min || Train Acc: 0.9965 | Val Acc: 0.9961 || Train Loss: 0.2300 | Val Loss: 0.2335 || Val IoU: 0.7581 | Val F1: 0.8623 | Val FPR: 0.0017
+2025-04-16 11:09:35,579 - architecture2 - INFO - Epoch 18/60 || Time: 117.25s | Remaining: 86.0min || Train Acc: 0.9965 | Val Acc: 0.9965 || Train Loss: 0.2295 | Val Loss: 0.2297 || Val IoU: 0.7750 | Val F1: 0.8732 | Val FPR: 0.0012
+2025-04-16 11:11:32,803 - architecture2 - INFO - Epoch 19/60 || Time: 117.22s | Remaining: 84.0min || Train Acc: 0.9965 | Val Acc: 0.9965 || Train Loss: 0.2292 | Val Loss: 0.2299 || Val IoU: 0.7742 | Val F1: 0.8726 | Val FPR: 0.0012
+2025-04-16 11:13:30,060 - architecture2 - INFO - Epoch 20/60 || Time: 117.25s | Remaining: 82.1min || Train Acc: 0.9966 | Val Acc: 0.9965 || Train Loss: 0.2292 | Val Loss: 0.2295 || Val IoU: 0.7755 | Val F1: 0.8735 | Val FPR: 0.0014
+2025-04-16 11:15:27,285 - architecture2 - INFO - Epoch 21/60 || Time: 117.22s | Remaining: 80.1min || Train Acc: 0.9966 | Val Acc: 0.9965 || Train Loss: 0.2292 | Val Loss: 0.2295 || Val IoU: 0.7762 | Val F1: 0.8739 | Val FPR: 0.0014
+2025-04-16 11:17:24,626 - architecture2 - INFO - Epoch 22/60 || Time: 117.34s | Remaining: 78.2min || Train Acc: 0.9966 | Val Acc: 0.9965 || Train Loss: 0.2290 | Val Loss: 0.2299 || Val IoU: 0.7751 | Val F1: 0.8733 | Val FPR: 0.0014
+2025-04-16 11:19:21,787 - architecture2 - INFO - Epoch 23/60 || Time: 117.16s | Remaining: 76.2min || Train Acc: 0.9966 | Val Acc: 0.9965 || Train Loss: 0.2290 | Val Loss: 0.2294 || Val IoU: 0.7767 | Val F1: 0.8742 | Val FPR: 0.0012
+2025-04-16 11:21:19,116 - architecture2 - INFO - Epoch 24/60 || Time: 117.32s | Remaining: 74.3min || Train Acc: 0.9966 | Val Acc: 0.9965 || Train Loss: 0.2288 | Val Loss: 0.2290 || Val IoU: 0.7779 | Val F1: 0.8750 | Val FPR: 0.0014
+2025-04-16 11:23:16,298 - architecture2 - INFO - Epoch 25/60 || Time: 117.18s | Remaining: 72.3min || Train Acc: 0.9966 | Val Acc: 0.9963 || Train Loss: 0.2288 | Val Loss: 0.2310 || Val IoU: 0.7691 | Val F1: 0.8694 | Val FPR: 0.0016
+2025-04-16 11:25:13,733 - architecture2 - INFO - Epoch 26/60 || Time: 117.44s | Remaining: 70.5min || Train Acc: 0.9966 | Val Acc: 0.9965 || Train Loss: 0.2286 | Val Loss: 0.2296 || Val IoU: 0.7749 | Val F1: 0.8731 | Val FPR: 0.0012
+2025-04-16 11:27:11,002 - architecture2 - INFO - Epoch 27/60 || Time: 117.26s | Remaining: 68.4min || Train Acc: 0.9966 | Val Acc: 0.9966 || Train Loss: 0.2285 | Val Loss: 0.2292 || Val IoU: 0.7786 | Val F1: 0.8755 | Val FPR: 0.0013
+2025-04-16 11:29:08,155 - architecture2 - INFO - Epoch 28/60 || Time: 117.15s | Remaining: 66.4min || Train Acc: 0.9966 | Val Acc: 0.9966 || Train Loss: 0.2282 | Val Loss: 0.2285 || Val IoU: 0.7808 | Val F1: 0.8768 | Val FPR: 0.0013
+2025-04-16 11:31:05,528 - architecture2 - INFO - Epoch 29/60 || Time: 117.37s | Remaining: 64.6min || Train Acc: 0.9966 | Val Acc: 0.9965 || Train Loss: 0.2282 | Val Loss: 0.2292 || Val IoU: 0.7780 | Val F1: 0.8751 | Val FPR: 0.0015
+2025-04-16 11:33:02,771 - architecture2 - INFO - Epoch 30/60 || Time: 117.24s | Remaining: 62.5min || Train Acc: 0.9966 | Val Acc: 0.9966 || Train Loss: 0.2281 | Val Loss: 0.2286 || Val IoU: 0.7809 | Val F1: 0.8769 | Val FPR: 0.0014
+2025-04-16 11:35:00,212 - architecture2 - INFO - Epoch 31/60 || Time: 117.44s | Remaining: 60.7min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2280 | Val Loss: 0.2287 || Val IoU: 0.7808 | Val F1: 0.8768 | Val FPR: 0.0014
+2025-04-16 11:36:57,703 - architecture2 - INFO - Epoch 32/60 || Time: 117.49s | Remaining: 58.7min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2278 | Val Loss: 0.2283 || Val IoU: 0.7822 | Val F1: 0.8777 | Val FPR: 0.0013
+2025-04-16 11:38:55,073 - architecture2 - INFO - Epoch 33/60 || Time: 117.37s | Remaining: 56.7min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2278 | Val Loss: 0.2284 || Val IoU: 0.7817 | Val F1: 0.8774 | Val FPR: 0.0013
+2025-04-16 11:40:52,396 - architecture2 - INFO - Epoch 34/60 || Time: 117.32s | Remaining: 54.8min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2278 | Val Loss: 0.2284 || Val IoU: 0.7819 | Val F1: 0.8775 | Val FPR: 0.0013
+2025-04-16 11:42:49,766 - architecture2 - INFO - Epoch 35/60 || Time: 117.36s | Remaining: 52.8min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2278 | Val Loss: 0.2283 || Val IoU: 0.7825 | Val F1: 0.8779 | Val FPR: 0.0013
+2025-04-16 11:44:47,227 - architecture2 - INFO - Epoch 36/60 || Time: 117.45s | Remaining: 50.9min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2277 | Val Loss: 0.2283 || Val IoU: 0.7826 | Val F1: 0.8780 | Val FPR: 0.0012
+2025-04-16 11:46:44,704 - architecture2 - INFO - Epoch 37/60 || Time: 117.47s | Remaining: 48.9min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2277 | Val Loss: 0.2282 || Val IoU: 0.7831 | Val F1: 0.8783 | Val FPR: 0.0013
+2025-04-16 11:48:42,197 - architecture2 - INFO - Epoch 38/60 || Time: 117.49s | Remaining: 47.0min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2277 | Val Loss: 0.2282 || Val IoU: 0.7827 | Val F1: 0.8780 | Val FPR: 0.0013
+2025-04-16 11:50:39,754 - architecture2 - INFO - Epoch 39/60 || Time: 117.56s | Remaining: 45.1min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2277 | Val Loss: 0.2282 || Val IoU: 0.7829 | Val F1: 0.8782 | Val FPR: 0.0014
+2025-04-16 11:52:37,125 - architecture2 - INFO - Epoch 40/60 || Time: 117.37s | Remaining: 43.0min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2276 | Val Loss: 0.2282 || Val IoU: 0.7824 | Val F1: 0.8778 | Val FPR: 0.0013
+2025-04-16 11:54:34,480 - architecture2 - INFO - Epoch 41/60 || Time: 117.35s | Remaining: 41.1min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2275 | Val Loss: 0.2281 || Val IoU: 0.7833 | Val F1: 0.8784 | Val FPR: 0.0013
+2025-04-16 11:56:31,985 - architecture2 - INFO - Epoch 42/60 || Time: 117.50s | Remaining: 39.2min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2275 | Val Loss: 0.2281 || Val IoU: 0.7834 | Val F1: 0.8785 | Val FPR: 0.0013
+2025-04-16 11:58:29,438 - architecture2 - INFO - Epoch 43/60 || Time: 117.45s | Remaining: 37.2min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2275 | Val Loss: 0.2281 || Val IoU: 0.7834 | Val F1: 0.8785 | Val FPR: 0.0012
+2025-04-16 12:00:26,862 - architecture2 - INFO - Epoch 44/60 || Time: 117.42s | Remaining: 35.2min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2275 | Val Loss: 0.2281 || Val IoU: 0.7837 | Val F1: 0.8787 | Val FPR: 0.0012
+2025-04-16 12:02:24,387 - architecture2 - INFO - Epoch 45/60 || Time: 117.52s | Remaining: 33.3min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2274 | Val Loss: 0.2281 || Val IoU: 0.7837 | Val F1: 0.8786 | Val FPR: 0.0012
+2025-04-16 12:04:21,835 - architecture2 - INFO - Epoch 46/60 || Time: 117.45s | Remaining: 31.3min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2274 | Val Loss: 0.2281 || Val IoU: 0.7836 | Val F1: 0.8786 | Val FPR: 0.0013
+2025-04-16 12:06:19,194 - architecture2 - INFO - Epoch 47/60 || Time: 117.36s | Remaining: 29.3min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2274 | Val Loss: 0.2282 || Val IoU: 0.7828 | Val F1: 0.8781 | Val FPR: 0.0013
+2025-04-16 12:08:16,573 - architecture2 - INFO - Epoch 48/60 || Time: 117.37s | Remaining: 27.4min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2274 | Val Loss: 0.2280 || Val IoU: 0.7838 | Val F1: 0.8787 | Val FPR: 0.0013
+2025-04-16 12:10:13,943 - architecture2 - INFO - Epoch 49/60 || Time: 117.36s | Remaining: 25.4min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2273 | Val Loss: 0.2280 || Val IoU: 0.7838 | Val F1: 0.8787 | Val FPR: 0.0012
+2025-04-16 12:12:11,419 - architecture2 - INFO - Epoch 50/60 || Time: 117.48s | Remaining: 23.5min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2274 | Val Loss: 0.2281 || Val IoU: 0.7837 | Val F1: 0.8787 | Val FPR: 0.0012
+2025-04-16 12:14:08,764 - architecture2 - INFO - Epoch 51/60 || Time: 117.35s | Remaining: 21.5min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2273 | Val Loss: 0.2281 || Val IoU: 0.7836 | Val F1: 0.8786 | Val FPR: 0.0013
+2025-04-16 12:16:06,273 - architecture2 - INFO - Epoch 52/60 || Time: 117.51s | Remaining: 19.6min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2273 | Val Loss: 0.2280 || Val IoU: 0.7837 | Val F1: 0.8787 | Val FPR: 0.0013
+2025-04-16 12:18:03,752 - architecture2 - INFO - Epoch 53/60 || Time: 117.47s | Remaining: 17.6min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2273 | Val Loss: 0.2280 || Val IoU: 0.7840 | Val F1: 0.8789 | Val FPR: 0.0012
+2025-04-16 12:20:01,140 - architecture2 - INFO - Epoch 54/60 || Time: 117.39s | Remaining: 15.7min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2273 | Val Loss: 0.2281 || Val IoU: 0.7836 | Val F1: 0.8786 | Val FPR: 0.0013
+2025-04-16 12:21:58,585 - architecture2 - INFO - Epoch 55/60 || Time: 117.45s | Remaining: 13.7min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2273 | Val Loss: 0.2280 || Val IoU: 0.7839 | Val F1: 0.8788 | Val FPR: 0.0013
+2025-04-16 12:23:55,982 - architecture2 - INFO - Epoch 56/60 || Time: 117.40s | Remaining: 11.7min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2273 | Val Loss: 0.2280 || Val IoU: 0.7839 | Val F1: 0.8788 | Val FPR: 0.0013
+2025-04-16 12:25:53,454 - architecture2 - INFO - Epoch 57/60 || Time: 117.47s | Remaining: 9.8min || Train Acc: 0.9967 | Val Acc: 0.9966 || Train Loss: 0.2273 | Val Loss: 0.2280 || Val IoU: 0.7839 | Val F1: 0.8788 | Val FPR: 0.0013
+2025-04-16 12:25:53,454 - architecture2 - INFO - Training completed! total time: 111.41 mins
+2025-04-16 12:25:53,454 - architecture2 - INFO - Best validation IoU achieved: 0.7840
+Treinando com U-net
+new best model saved at epoch 1 (Val IoU: 0.6007, Val Loss: 0.2694)
+new best model saved at epoch 2 (Val IoU: 0.6848, Val Loss: 0.2499)
+new best model saved at epoch 3 (Val IoU: 0.7174, Val Loss: 0.2414)
+new best model saved at epoch 4 (Val IoU: 0.7282, Val Loss: 0.2391)
+new best model saved at epoch 5 (Val IoU: 0.7345, Val Loss: 0.2377)
+new best model saved at epoch 6 (Val IoU: 0.7347, Val Loss: 0.2374)
+Early stop counter: 1/4
+Early stop counter: 2/4
+new best model saved at epoch 9 (Val IoU: 0.7500, Val Loss: 0.2343)
+Early stop counter: 1/4
+Early stop counter: 2/4
+Early stop counter: 3/4
+new best model saved at epoch 13 (Val IoU: 0.7632, Val Loss: 0.2322)
+new best model saved at epoch 14 (Val IoU: 0.7701, Val Loss: 0.2306)
+Early stop counter: 1/4
+Early stop counter: 2/4
+Early stop counter: 3/4
+new best model saved at epoch 18 (Val IoU: 0.7750, Val Loss: 0.2297)
+Early stop counter: 1/4
+new best model saved at epoch 20 (Val IoU: 0.7755, Val Loss: 0.2295)
+new best model saved at epoch 21 (Val IoU: 0.7762, Val Loss: 0.2295)
+Early stop counter: 1/4
+new best model saved at epoch 23 (Val IoU: 0.7767, Val Loss: 0.2294)
+new best model saved at epoch 24 (Val IoU: 0.7779, Val Loss: 0.2290)
+Early stop counter: 1/4
+Early stop counter: 2/4
+new best model saved at epoch 27 (Val IoU: 0.7786, Val Loss: 0.2292)
+new best model saved at epoch 28 (Val IoU: 0.7808, Val Loss: 0.2285)
+Early stop counter: 1/4
+new best model saved at epoch 30 (Val IoU: 0.7809, Val Loss: 0.2286)
+Early stop counter: 1/4
+new best model saved at epoch 32 (Val IoU: 0.7822, Val Loss: 0.2283)
+Early stop counter: 1/4
+Early stop counter: 2/4
+new best model saved at epoch 35 (Val IoU: 0.7825, Val Loss: 0.2283)
+new best model saved at epoch 36 (Val IoU: 0.7826, Val Loss: 0.2283)
+new best model saved at epoch 37 (Val IoU: 0.7831, Val Loss: 0.2282)
+Early stop counter: 1/4
+Early stop counter: 2/4
+Early stop counter: 3/4
+new best model saved at epoch 41 (Val IoU: 0.7833, Val Loss: 0.2281)
+new best model saved at epoch 42 (Val IoU: 0.7834, Val Loss: 0.2281)
+Early stop counter: 1/4
+new best model saved at epoch 44 (Val IoU: 0.7837, Val Loss: 0.2281)
+Early stop counter: 1/4
+Early stop counter: 2/4
+Early stop counter: 3/4
+new best model saved at epoch 48 (Val IoU: 0.7838, Val Loss: 0.2280)
+new best model saved at epoch 49 (Val IoU: 0.7838, Val Loss: 0.2280)
+Early stop counter: 1/4
+Early stop counter: 2/4
+Early stop counter: 3/4
+new best model saved at epoch 53 (Val IoU: 0.7840, Val Loss: 0.2280)
+Early stop counter: 1/4
+Early stop counter: 2/4
+Early stop counter: 3/4
+Early stop counter: 4/4
+Plot saved to /home/cirorocha/PIBIC_CIRO/results/training_plot_16-04-2025-10-34

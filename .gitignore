@@ -2,3 +2,4 @@ venv/
 repository/
 __py_cache__/
 architecture.py
+littlesecret/

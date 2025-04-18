@@ -26,7 +26,42 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
+class PoreDetectionCNN2(nn.Module):
+    def __init__(self):
+        super(PoreDetectionCNN2, self).__init__()
+        self.conv1_1 = nn.Conv2d(1, 16, kernel_size=3, padding=1)
+        self.bn1_1 = nn.BatchNorm2d(16)
+        self.conv1_2 = nn.Conv2d(16, 16, kernel_size=3, padding=1)
+        self.bn1_2 = nn.BatchNorm2d(16)
 
+        self.conv2_1 = nn.Conv2d(16, 32, kernel_size=3, padding=1)
+        self.bn2_1 = nn.BatchNorm2d(32)
+        self.conv2_2 = nn.Conv2d(32, 32, kernel_size=3, padding=1)
+        self.bn2_2 = nn.BatchNorm2d(32)
+
+        self.conv3_1 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
+        self.bn3_1 = nn.BatchNorm2d(64)
+        self.conv3_2 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
+        self.bn3_2 = nn.BatchNorm2d(64)
+
+        self.dropout = nn.Dropout2d(0.5)
+        self.pointwise_conv = nn.Conv2d(112, 1, kernel_size=1)  
+
+    def forward(self, x):
+        x1 = F.relu(self.bn1_1(self.conv1_1(x)))
+        x1 = F.relu(self.bn1_2(self.conv1_2(x1))) + x1
+
+        x2 = F.relu(self.bn2_1(self.conv2_1(x1)))
+        x2 = F.relu(self.bn2_2(self.conv2_2(x2))) + x2
+
+        x3 = F.relu(self.bn3_1(self.conv3_1(x2)))
+        x3 = F.relu(self.bn3_2(self.conv3_2(x3))) + x3
+
+
+        
+        x_concat = torch.cat([x1, x2, x3], dim=1)
+        x_final = self.pointwise_conv(x_concat)  
+        return (torch.sigmoid(x_final))
 #U-NET architecture used
 class EnhancedPoreDetectionCNN(nn.Module):
     def __init__(self, in_channels=1):
@@ -58,21 +93,23 @@ class EnhancedPoreDetectionCNN(nn.Module):
         self.conv4_2 = nn.Conv2d(256, 256, kernel_size=3, padding=1)
         self.bn4_2 = nn.BatchNorm2d(256)
         
+
+        #decoder path
         self.upconv3 = nn.ConvTranspose2d(256, 128, kernel_size=2, stride=2)
-        
+        #firt layer
     
         self.conv3_3 = nn.Conv2d(256, 128, kernel_size=3, padding=1)  # 128 + 128 = 256
         self.bn3_3 = nn.BatchNorm2d(128)
         self.conv3_4 = nn.Conv2d(128, 128, kernel_size=3, padding=1)
         self.bn3_4 = nn.BatchNorm2d(128)
-        
+        #second layer
         self.upconv2 = nn.ConvTranspose2d(128, 64, kernel_size=2, stride=2)
         
         self.conv2_3 = nn.Conv2d(128, 64, kernel_size=3, padding=1)  
         self.bn2_3 = nn.BatchNorm2d(64)
         self.conv2_4 = nn.Conv2d(64, 64, kernel_size=3, padding=1)
         self.bn2_4 = nn.BatchNorm2d(64)
-        
+        #third layer
         self.upconv1 = nn.ConvTranspose2d(64, 32, kernel_size=2, stride=2)
         
         self.conv1_3 = nn.Conv2d(64, 32, kernel_size=3, padding=1)  
@@ -213,10 +250,7 @@ def evaluate(model, loader, size, device, criterion):
             
            
              
-            if isinstance(criterion, nn.BCEWithLogitsLoss):
-                batch_loss = criterion(torch.log(outputs / (1 - outputs + 1e-7)), targets)
-            else:
-                batch_loss = criterion(outputs, targets)
+            batch_loss = criterion(outputs, targets)
             
             batch_metrics = compute_enhanced_metrics(outputs, targets)
             batch_acc = batch_metrics['accuracy']
@@ -255,7 +289,7 @@ def train_model(train_loader: DataLoader, val_loader: DataLoader, train_size: in
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=2, factor=0.5)
 
 
-    best_val_loss = float('inf')
+    best_val_iou = -float('inf')
 
     model_name = f"best_model_{date_today}.pth"
     save_path = "model_folder/" + model_name
@@ -264,7 +298,7 @@ def train_model(train_loader: DataLoader, val_loader: DataLoader, train_size: in
     early_stop = 0
     times = []
     epoch = 0
-
+    print("Treinando com U-net")
     logger.info(f"training started for {num_epochs} epochs")
     logger.info(f"model will be saved to: {save_path}")
 
@@ -318,20 +352,22 @@ def train_model(train_loader: DataLoader, val_loader: DataLoader, train_size: in
         for key in val_metrics:
             history[f'val_{key}'].append(val_metrics[key])
 
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
+        val_iou = val_metrics['iou']
+        if val_iou > best_val_iou:
+            best_val_iou = val_iou
             torch.save({
                 'epoch': epoch + 1,
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
                 'scheduler_state_dict': scheduler.state_dict(),
-                'best_val_loss': best_val_loss,
+                'best_val_iou': best_val_iou,
+                'val_loss': val_loss, 
             }, save_path)
-            logger.info(f"new best model saved at epoch {epoch + 1} (Val Loss: {val_loss:.4f})")
+            print(f"new best model saved at epoch {epoch + 1} (Val IoU: {val_iou:.4f}, Val Loss: {val_loss:.4f})")
+            early_stop = 0
         else:
             early_stop += 1
-            logger.debug(f"Early stop counter: {early_stop}/{patience}")
-
+            print(f"Early stop counter: {early_stop}/{patience}")
         
         final_time = end-st
         remaining = ((num_epochs - epoch) + 1) * final_time
@@ -343,12 +379,12 @@ def train_model(train_loader: DataLoader, val_loader: DataLoader, train_size: in
             
             f"Train Acc: {train_acc:.4f} | Val Acc: {val_acc:.4f} || "
             f"Train Loss: {train_loss:.4f} | Val Loss: {val_loss:.4f} || "
-            f"Val IoU: {val_metrics['iou']:.4f} | Val F1: {val_metrics['f1']:.4f}"
+            f"Val IoU: {val_metrics['iou']:.4f} | Val F1: {val_metrics['f1']:.4f} | Val FPR: {val_metrics['fpr']:.4f}"
         )
 
         epoch = epoch + 1
     logger.info(f"Training completed! total time: {sum(times)/60:.2f} mins")
-    logger.info(f"Best validation loss achieved: {best_val_loss:.4f}")
+    logger.info(f"Best validation IoU achieved: {best_val_iou:.4f}")
     return history
 
 

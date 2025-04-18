@@ -24,7 +24,7 @@ def claheimg(path):
     claheImg = claheObj.apply(img)
     img_normalized = claheImg.astype(np.float32) / 255.0
 
-    return img_normalized
+    return img_normalized, img
 
 # Class to create the dataset
 class FingerprintData(Dataset):
@@ -49,8 +49,8 @@ class FingerprintData(Dataset):
         
         img_path = os.path.join(self.image_dir, img_name)
         #aqui chama-se a função clahe
-        image = Image.fromarray(claheimg(img_path))
-        
+        _,image = claheimg(img_path)
+        image = Image.fromarray(image)
         label_path = os.path.join(self.label_dir, label_name)
         coords = pd.read_csv(label_path, sep = '\t', names = ['x', 'y']).values
         

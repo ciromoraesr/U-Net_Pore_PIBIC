@@ -1,0 +1,4 @@
+2025-04-15 23:11:13,508 - architecture2 - INFO - training started for 30 epochs
+2025-04-15 23:11:13,508 - architecture2 - INFO - model will be saved to: model_folder/best_model_15-04-2025-23-11.pth
+2025-04-15 23:11:38,021 - architecture2 - INFO - training started for 30 epochs
+2025-04-15 23:11:38,021 - architecture2 - INFO - model will be saved to: model_folder/best_model_15-04-2025-23-11.pth

@@ -36,8 +36,8 @@ def set_seed(seed=42):
 
 set_seed(42)
 
-img_dir = r'rep/images'
-lbl_dir = r'rep/labels'
+img_dir = r"/home/cirorocha/PIBIC_CIRO/repository/new_images/"
+lbl_dir = r"/home/cirorocha/PIBIC_CIRO/repository/new_labels/"
 dataset = FingerprintData(img_dir, lbl_dir, transform = exform)
 
 
@@ -61,20 +61,26 @@ date_today = datetime.now().strftime("%d-%m-%Y-%H-%M")
 v = input("Wanna train the model? [Y/n]")
 
 if(v.lower() == 'y'):
-    h = architecture2.train_model(train_loader, val_loader, train_size, val_size, date_today, num_epochs = 30)
+    h = architecture2.train_model(train_loader, val_loader, train_size, val_size, date_today, num_epochs = 60)
     
    
     savepath = os.path.join("/home/cirorocha/PIBIC_CIRO/results/", "training_plot_"+date_today)
     plot_results(h, savepath)
 
-model_now = "/home/cirorocha/PIBIC_CIRO/model_folder/best_model_03-04-2025-13-57.pth"
-model = architecture2.EnhancedPoreDetectionCNN()
+model_1 = "/home/cirorocha/PIBIC_CIRO/model_folder/best_model_16-04-2025-08-26.pth"
+model_2 = "/home/cirorocha/PIBIC_CIRO/model_folder/best_model_15-04-2025-23-09.pth"
 
-cont, coords = overlay(model, model_now, test_dataset)
+model1 = architecture2.EnhancedPoreDetectionCNN()
+model2 = architecture2.PoreDetectionCNN2()
+# plot_example(model, model_now, test_dataset)
+# cont, coords = overlay(model, model_now, test_dataset)
 
-
-test_loss, test_acc, t_metrics = test_acc(model, test_loader, test_size)
-print(t_metrics)
+print("modelo u net")
+test_loss, test_accuracy, t_metrics = test_acc(model1,model_1, test_loader, test_size)
+print(test_accuracy,t_metrics)
+print("modelo resnet")
+test_loss, test_accuracy, t_metrics = test_acc(model2,model_2, test_loader, test_size)
+print(test_accuracy,t_metrics)
 
 
 

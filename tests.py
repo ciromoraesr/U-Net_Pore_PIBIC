@@ -3,6 +3,7 @@ import architecture2
 import random
 import os
 import cv2
+from PIL import Image
 import matplotlib.patches as mpatches
 import numpy as np
 from datetime import datetime
@@ -13,9 +14,15 @@ from torch.utils.data import Dataset, DataLoader, random_split
 import matplotlib.pyplot as plt
 
 model_now = "/home/cirorocha/PIBIC_CIRO/model_folder/best_model_03-04-2025-13-57.pth"
+def clahetest(path):
+    
+    claheObj = cv2.createCLAHE(clipLimit=5, tileGridSize=(8,8))
+    claheImg = claheObj.apply(path)
+    img_normalized = claheImg.astype(np.float32) / 255.0
 
+    return img_normalized
 # function to be further used
-def show_images(image1, image2, image3, filename):
+def show_images(image1, image2, filename, image3 = None):
     filename = filename + ".png"
     if image3 is None:
         image1_np = image1.squeeze().numpy()
@@ -31,10 +38,11 @@ def show_images(image1, image2, image3, filename):
             image2_np = cv2.resize(image2_np, (w2, h))
         _, axs = plt.subplots(1, 2, figsize=(12, 12))
         axs = axs.flatten()
-        axs[0].imshow(image1_np)
-        axs[0].set_title('Imagem 1')
-        axs[1].imshow(image2_np)
-        axs[1].set_title('Imagem 2')
+        img_test = clahetest(image1_np)
+        axs[0].imshow(image1_np, cmap = 'gray')
+        axs[0].set_title('Imagem original')
+        axs[1].imshow(img_test, cmap = 'gray')
+        axs[1].set_title('Imagem após CLAHE')
 
         
         for ax in axs:
@@ -93,7 +101,7 @@ def plot_example(model, model_folder, test_dataset):
     
     output = output.squeeze(0).cpu().numpy()
     output = output.squeeze(0)
-    show_images(image_ex, heat_ex, output, filename)
+    show_images(image_ex, heat_ex, filename=filename)
     print(f"test image saved at {filename}")
 
 
@@ -165,7 +173,7 @@ def overlay(model, model_folder, test_dataset):
 
 
 #function to test the accuracy from the model in the test dataset.
-def test_acc(model, test_loader, test_size):
+def test_acc(model,using_model, test_loader, test_size):
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
@@ -173,7 +181,7 @@ def test_acc(model, test_loader, test_size):
     
     criterion = architecture2.CombinedLoss(bce_weight=0.5).to(device)
 
-    checkpoint = torch.load(model_now)
+    checkpoint = torch.load(using_model)
 
     model.load_state_dict(checkpoint['model_state_dict'])
 
